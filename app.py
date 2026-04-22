@@ -52,5 +52,32 @@ def get_bot_user_id(client) -> str:
 
 
 
+@app.event("member_joined_channel")
+def handle_join(event, client, logger):
+
+    if event.get("channel") != CHANNEL_ID:
+        return
+    
+    user_id = event["user"]
+    data = load_data()
+
+    if user_id in data["current_members"]:
+        del data["current_members"][user_id]
+        save_data(data)
+
+
+@app.command("/lopio")
+def handle_lopio(ack, command, client, respond, logger):
+    ack()
+
+
+    args = (command.get("text") or "").strip().lower().split()
+    subCmd = args[0] if args else ""
+    caller = command["user_id"]
+
+
+
+    
+
 
     
