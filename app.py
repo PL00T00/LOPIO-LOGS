@@ -119,5 +119,29 @@ def handle_lopio(ack, command, client, respond, logger):
     caller = command["user_id"]
 
 
+    if subCmd == "log"
+        data = load_data()
+        now = time.time()
 
+        total = len(data["total_unique"])
+        current = data["current_members"]
+
+
+        lines = [
+            f"*:lock: LOPIO Channel Stats*",
+            f"*Total unique members ever:* {total}"
+            f"*Currently in channel:* {len(current)}",
+            "",
+        ]
+
+    if current:
+        lines.append("*Current members:*")
+        for uid, joined_ts in current.items():
+            name = get_display_name(client, uid)
+            duration = fmt_duration(now - joined_ts)
+            lines.append(f" - <@{uid}> ({name}) - in for *{duration}*")
+        else:
+            lines.append("_No members currently in channel (except the bot hehe)._")
+
+        respond("\n".join(lines), response_type="ephemeral")
     
