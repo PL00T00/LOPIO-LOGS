@@ -156,3 +156,35 @@ def handle_lopio(ack, command, client, respond, logger):
             respond(":jame-goog: Welcome back, master!", response_type="ephemeral")
             except Exception as e:
                 respond(f"I dont know what you want from me bro, but I cant do it. Error: {e}", response_type="ephemeral")
+            
+
+    else:
+        respond(
+            ":jame-hehe: That's not how you use the command! Try `/lopio log` to see stats! :jame-hehe:", response_type="ephemeral")
+        
+
+        if __name__ == "__main__":
+            bot_id = get_bot_user_id(app.client)
+            data = load_data()
+            now = time.time()
+
+        try:
+            result = app.client.conversations_members(channel=CHANNEL_ID)
+            for uid in result["members"]:
+                if uid == bot_id:
+                    continue
+                if uid not in data["total_unique"]:
+                    data["total_unique"].append(uid)
+                if uid not in data["current_members"]:
+                    data["current_members"][uid] = now
+                    save_data(data)
+                    print(f"[lopio] Synced {len(result['members'])} members on startup.")
+                    except Exception as e:
+                        print(f"[lopio] Failed to sync members on startup: {e}")
+                    
+
+                    handler = SocketModeHandler(app, os.eniron["SLACK_APP_TOKEN"])
+                    handler.start()
+
+
+# this bot was made by Jame on slack, please support it by staring it on github:https://github.com/PL00T00/LOPIO-LOGS or contributing!
