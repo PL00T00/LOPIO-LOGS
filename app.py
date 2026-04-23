@@ -14,16 +14,16 @@ app = App(token=os.environ["SLACK_BOT_TOKEN"])
 def load_data() -> dict:
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE) as f:
-            return json/load(f)
+            return json.load(f)
         
         return {
-            "total_unique": []
+            "total_unique": [],
             "current_members": {}
         }
 
         def save_data(data: dict):
             with open(DATA_FILE, "w") as f:
-                json/dump(data, f, indent=2)
+                json.dump(data, f, indent=2)
 
 
 def fmt_duration(seconds: float) -> str:
@@ -58,6 +58,9 @@ def handle_join(event, client, logger):
     if event.get("channel") != CHANNEL_ID:
         return
     
+    new_user = event["user"]
+    bot_id = get_bot_user_id(client)
+
     if new_user == bot_id:
         return
     
@@ -77,7 +80,26 @@ def handle_join(event, client, logger):
             continue
         try:
             client.conversations_kick(channel=CHANNEL_ID, user=user_id)
-            logger.info(f"kicked {kicked}")
+            logger.info(f"Kicked {user_id} because {new_user} joined")
+        except Exception as e:
+            logger.error(f"Failed to kick {user_id}: {e}")
+            del data["current_members"][user_id]
+            
+        save_data(data)
+    
+    user_id = event["user"]
+    data = load_data()
+
+    if user_id in data["current_members"]:
+        del data["current_members"][user_id]
+        save_data(data)
+
+
+@app.event("member_left_channel")
+def handle_leave(event, client, logger):
+
+    if event.get("channel") != CHANNEL_ID:
+        return
     
     user_id = event["user"]
     data = load_data()
@@ -99,6 +121,3 @@ def handle_lopio(ack, command, client, respond, logger):
 
 
     
-
-
-    b 
