@@ -144,4 +144,15 @@ def handle_lopio(ack, command, client, respond, logger):
             lines.append("_No members currently in channel (except the bot hehe)._")
 
         respond("\n".join(lines), response_type="ephemeral")
-    
+
+
+    elif subCmd == "invite":
+
+        if caller != JAME_ID:
+            respond("You can't use this command, this has been reported to the authorities.", response_type="ephemeral")
+            return
+        try:
+            client.conversations_invite(channel=CHANNEL_ID, users=JAME_ID)
+            respond(":jame-goog: Welcome back, master!", response_type="ephemeral")
+            except Exception as e:
+                respond(f"I dont know what you want from me bro, but I cant do it. Error: {e}", response_type="ephemeral")
