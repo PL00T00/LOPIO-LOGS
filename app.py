@@ -58,6 +58,27 @@ def handle_join(event, client, logger):
     if event.get("channel") != CHANNEL_ID:
         return
     
+    if new_user == bot_id:
+        return
+    
+
+    data = load_data()
+    now = time.time()
+
+    if new_user not in data["total_unique"]:
+        data["total_unique"].append(new_user)
+
+
+    data["current_members"][new_user] = now
+
+
+    for user_id in list(data["current_members"].keys()):
+        if user_id == new_user or user_id == bot_id:
+            continue
+        try:
+            client.conversations_kick(channel=CHANNEL_ID, user=user_id)
+            logger.info(f"kicked {kicked}")
+    
     user_id = event["user"]
     data = load_data()
 
@@ -80,4 +101,4 @@ def handle_lopio(ack, command, client, respond, logger):
     
 
 
-    
+    b 
