@@ -174,3 +174,4 @@ if __name__ == "__main__":
     handler.start()
 
 # this bot was made by Jame on slack, please support it by starring it on github: https://github.com/PL00T00/LOPIO-LOGS or contributing!
+# It's currently in V1, so expect some bugs and missing features. If you have any suggestions or want to contribute, feel free to!
