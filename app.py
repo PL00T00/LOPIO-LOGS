@@ -113,7 +113,7 @@ def handle_lopio(ack, command, client, respond, logger):
         data    = load_data()
         now     = time.time()
         total   = len(data["total_unique"])
-        current = data["current_members"]
+        current = data["current_member"]
 
         lines = [
             f"*:lock: LOPIO Channel Stats*",
