@@ -152,7 +152,7 @@ def handle_lopio(ack, command, client, respond, logger):
                 kwargs = {"channel": CHANNEL_ID, "limit": 200}
                 if cursor:
                     kwargs["cursor"] = cursor
-                result = client.converstaion_history(**kwargs)
+                result = client.conversations_history(**kwargs)
                 messages.extend(result["messages"])
 
                 if result.get("response_metadata", {}).get("next_cursor"):
@@ -168,7 +168,7 @@ def handle_lopio(ack, command, client, respond, logger):
             ]
             
             if not user_messages:
-                respond(":cryin: No messages found, I swear I looked!", response_type = ephemeral)
+                respond(":cryin: No messages found, I swear I looked!", response_type ="ephemeral")
                 return
             
             user_messages.sort(key=lambda m: float(m["ts"]))
