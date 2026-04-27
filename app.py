@@ -143,9 +143,51 @@ def handle_lopio(ack, command, client, respond, logger):
         except Exception as e:
             respond(f":jame-goog:I dont know what you want from me bro, but I cant do it. Error: {e}", response_type="ephemeral")
 
+    elif subCMD =="history":
+        try:
+            messages = []
+            cursor =None
+
+            while True:
+                kwargs = {"channel": CHANNEL_ID, "limit": 200}
+                if cursor:
+                    kwargs["cursor"] = cursor
+                result = client.converstaion_history(**kwargs)
+                messages.extend(result["messages"])
+
+                if result.get("response_metadata", {}).get("next_cursor"):
+                    cursor = result["response_metadata"]["next_cursor"]
+                else:
+                    break
+
+            user_messages = [
+                m for m in messages
+                if m.get("type") == "message"
+                and m.get("subtype") is None
+                and m.get("user")
+            ]
+            
+            if not user_messages:
+                respond(":cryin: No messages found, I swear I looked!", response_type = ephemeral)
+                return
+            
+            user_messages.sort(key=lambda m: float(m["ts"]))
+
+            timeline = []
+            for m in user_messages:
+                timeline.append(f"<@{m['user']}>")
+
+            respond(
+                f"*:scroll: Channel Timeline*\n{'->'.join(timeline)}",
+                response_type="ephemeral"
+               )
+            
+        except Exception as e:
+            respond(f":Ahh fuck, I forgot how to get the history. pls ping @jame (error): `{e}`", response_type="ephemeral")
+
     else:
         respond(
-            ":jame-hehe: That's not how you use the command! Try `/lopio log` to see stats! :jame-hehe:",
+            ":jame-hehe: That's not how you use the command! Try `/lopio log` to see stats or '/lopio history' to see a timeline of everyone in the channel! :jame-hehe:",
             response_type="ephemeral"
         )
 
