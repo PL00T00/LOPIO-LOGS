@@ -113,7 +113,7 @@ def handle_lopio(ack, command, client, respond, logger):
         data    = load_data()
         now     = time.time()
         total   = len(data["total_unique"])
-        current = data["current_member"]
+        current = data["current_members"]
 
         lines = [
             f"*:lock: LOPIO Channel Stats*",
@@ -143,7 +143,7 @@ def handle_lopio(ack, command, client, respond, logger):
         except Exception as e:
             respond(f":jame-goog:I dont know what you want from me bro, but I cant do it. Error: {e}", response_type="ephemeral")
 
-    elif subCMD =="history":
+    elif subCmd =="history":
         try:
             messages = []
             cursor =None
