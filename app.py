@@ -100,7 +100,7 @@ def handle_join(event, client, logger):
     
     except Exception as e:
         logger.error(f"Failed to send welcome message to {new_user}: {e}")
-        )
+    
 
     save_data(data)
 
