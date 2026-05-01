@@ -83,6 +83,25 @@ def handle_join(event, client, logger):
             logger.error(f"Failed to kick {user_id}: {e}")
         del data["current_members"][user_id]
 
+    try:
+        app.client.chat_postEphemeral(
+            channel=CHANNEL_ID,
+            user=new_user,
+            text=(  "Welcome to LOPIO! LOPIO stands for \"Leave one pass it on\" which pretty much describes the premise of this. "
+                "Please read the entirety of the following before doing anything, if you lose this message run `/lopio prompt` to have it send again.\n\n"
+                "Lopio is simple, you send a message then add someone else.\n\n"
+                "You should send something meaningful, deep and special... ORRR just something goofy, meaningless and confusing. "
+                "Please only send one message though. After you've sent your message ping someone to add them, once they've been invited the bot should kick you. "
+                "(If that doesnt happen please leave the channel and dm @jame to let him know)\n\n"
+                "Now you know everything there is to learn... atleast you think you do :jame-hehe: go and send a message and spread the channel!\n\n"
+                "- Jame"
+            )
+        )
+    
+    except Exception as e:
+        logger.error(f"Failed to send welcome message to {new_user}: {e}")
+        )
+
     save_data(data)
 
 # ── Event: someone leaves ─────────────────────────────────────────────────────
@@ -184,6 +203,18 @@ def handle_lopio(ack, command, client, respond, logger):
             
         except Exception as e:
             respond(f":Ahh fuck, I forgot how to get the history. pls ping @jame (error): `{e}`", response_type="ephemeral")
+
+    elif subCmd == "prompt":
+        respond(  "Welcome to LOPIO! LOPIO stands for \"Leave one pass it on\" which pretty much describes the premise of this. "
+                "Please read the entirety of the following before doing anything, if you lose this message run `/lopio prompt` to have it send again.\n\n"
+                "Lopio is simple, you send a message then add someone else.\n\n"
+                "You should send something meaningful, deep and special... ORRR just something goofy, meaningless and confusing. "
+                "Please only send one message though. After you've sent your message ping someone to add them, once they've been invited the bot should kick you. "
+                "(If that doesnt happen please leave the channel and dm @jame to let him know)\n\n"
+                "Now you know everything there is to learn... atleast you think you do :jame-hehe: go and send a message and spread the channel!\n\n"
+                "- Jame",
+                response_type="ephemeral"   
+            )
 
     else:
         respond(
