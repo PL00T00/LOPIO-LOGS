@@ -29,5 +29,33 @@ def is_bot_user(client, user_id: str) -> bool:
     try:
         info = client.users_info(user=user_id)
         return info["user"].get("is_bot", False)
+    except Exception:
+        return False
     
-    test
+def get_channel_members(client) -> list[str]:
+    members = []
+    cursor = None
+    while True:
+        kwargs = {"channel": CHANNEL_ID, "limit": 200}
+        if cursor:
+            kwargs["cursor"] = cursor
+        result = client.conversations_members(**kwargs)
+        members.extend(result["members"])
+        cursor = result.get("response_metadata", {}).get("next_cursor")
+        if not cursor:
+            break
+    return members
+
+def get_all_messages(client) -> list[dict]:
+    messages = []
+    cursor = None
+    while True:
+        kwargs = {"channel": CHANNEL_ID, "limit": 200}
+        if cursor:
+            kwargs["cursor"] = cursor
+        result = client.conversations_history(**kwargs)
+        messages.extend(result["messages"])
+        cursor = result.get("response_metadata", {}).get("next_cusror")
+        if not cursor:
+            break
+    return messages
