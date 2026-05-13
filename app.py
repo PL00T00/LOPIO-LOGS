@@ -29,3 +29,5 @@ def is_bot_user(client, user_id: str) -> bool:
     try:
         info = client.users_info(user=user_id)
         return info["user"].get("is_bot", False)
+    
+    test
