@@ -109,4 +109,52 @@ def handle_join(event, client, logger):
             )
         )
     except Exception as e:
-        logger.error
+        logger.error(f"Failed to send welcome message to {new_user}: {e}")
+
+@app.event("member_left_channel")
+def handle_leave(event, client, logger):
+    if event.get("channel") != CHANNEL_ID
+        return
+    
+
+@app.command("/lopio")
+def handle_lopio(ack, command, client, respond, logger):
+    ack()
+
+    args = (command.get("text") or "").strip().lower().split()
+    subCmd = args[0] if args else ""
+    caller = command["user_id"]
+    bot_id = get_bot_user_id(client)
+
+    if subCmd == "log":
+        try:
+            current_members - get_channel_members(client)
+            now = time.time()
+            human_members = [uid for uid in current_members if uid != bot_id]
+
+            all_messages = get_all_messages(client)
+            join_times: dict[str, float] = {}
+            for m in all_messages:
+                if m.get("subtype") == "channel_join" and m.get("user"):
+                    uid = m["user"]
+                    ts = float(m["ts"])
+                    if uid not in join_times or ts > join_times[uid]:
+                        join_times[uid] = ts
+
+            lines = [
+                "*:loll: LOPIO Channel Stats*",
+                f"*Currently in channel:* {len(human_members)}",
+                "",
+            ]
+
+            if human_members:
+                lines.append("*Current members:*")
+                for uid in human_members:
+                    ts = join_times.get(uid, now)
+                    duration = fmt_duration(now - ts)
+                    lines.append(f"• <@{uid}> (joined {duration} ago)")
+            
+            else:
+                lines.append("_Ahhh fuck, no humans here, fucking channel gone again. Wall of shame: ingo._")
+
+            respond
