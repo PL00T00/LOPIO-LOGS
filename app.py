@@ -217,4 +217,27 @@ def handle_lopio(ack, command, client, respond, logger):
             else:
                 respond(f":jame-holdonnow: FUCK FUCK FUCK failed to invite. Error: `{e}`", response_type="ephemeral")
 
-                
+    elif: subCmd == "prompt":
+        respond(
+            "Welcome to LOPIO! LOPIO stands for \"Leave one pass it on\" which pretty much describes the premise of this. "
+            "Please read the entirety of the following before doing anything. If you lose this message run `/lopio prompt` to get it again.\n\n"
+            "Lopio is simple: you send a message, then add someone else.\n\n"
+            "You should send something meaningful, deep and special... ORRR just something goofy, meaningless and confusing. "
+            "Please only send one message though. After you've sent your message, ping someone to add them — once they've been invited the bot should kick you. "
+            "(If that doesn't happen, please leave the channel and dm @jame to let him know)\n\n"
+            "Now you know everything there is to learn... at least you think you do :jame-hehe: "
+            "Go send a message and spread the channel!\n\n"
+            "- Jame", 
+            response_type="ephemeral"
+        )
+
+    else:
+        respond(
+            ":jame-hehe: Not a valid command! Try onw of these:\n"
+            " - `/lopio log` - see who's currently in the channel\n"
+            " - `/lopio history` - see the full chain of people in the channel\n"
+            " - `/lopio prompt` - get the welcome message",
+            response_type="ephemeral"
+        )
+
+
