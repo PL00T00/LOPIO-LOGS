@@ -113,7 +113,7 @@ def handle_join(event, client, logger):
 
 @app.event("member_left_channel")
 def handle_leave(event, client, logger):
-    if event.get("channel") != CHANNEL_ID
+    if event.get("channel") != CHANNEL_ID:
         return
     
 
