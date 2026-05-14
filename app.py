@@ -66,6 +66,31 @@ def handle_join(event, client, logger):
     if event.get("channel") != CHANNEL_ID:
         return
     
+    bot_id = get_bot_user_id(client)
+
+    def check_and_rescue():
+        time.sleep(EMPTY_CHANNEL_GRACE)
+        try:
+            members = get_channel_members(client)
+            human_members = [uid for uid in members if uid != bot_id]
+            if not human_members:
+                logger.info("Channel is empty - auto-inviting Jame to prevent deletion.")
+                global _jame_self_invite_pending
+                _jame_self_invite_pending = True
+                try:
+                    client.conversation_invite(channel=CHANNEL_ID, users=JAME_ID)
+                    logger.info("Auto-invited Jame.")
+                except Exception as e:
+                    _jame_self_invite_pending = False
+                    if "already_in_channel" in str(e):
+                        logger.info("Jame is in channel, stop panicing")
+                    else:
+                        logger.error(f"Failed to auto-invite Jame: {e}")
+        except Exception as e:
+            logger.error(f"Error during empty-channel check: {e}")
+
+    threading.Thread(target=check_and_rescue, daemon=True.start())
+    
     new_user = event["user"]
     bot_id = get_bot_user_id(client)
 
@@ -209,9 +234,13 @@ def handle_lopio(ack, command, client, respond, logger):
             )
             return
         try:
+
+            global _jame_self_invite_pending
+            _jame_self_invite_pending = True
             client.conversations_invite(channel=CHANNEL_ID, users=JAME_ID)
             respond(":jame-goog-67: Welcome back, master!", response_type="ephemeral")
         except Exception as e:
+            _jame_self_invite_pending = False
             if "already_in_channel" in str(e):
                 respond(":jame-hehe: You're already in the channel!", response_type="ephemeral")
             else:
