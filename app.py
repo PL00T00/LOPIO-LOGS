@@ -167,3 +167,39 @@ def handle_lopio(ack, command, client, respond, logger):
     elif subCmd == "history":
         try: 
             all_messages = get_all_messages(client)
+
+            user_messages = [
+                m for m in all_messages
+                im m.get("type") == "message"
+                and m.get("subtype") is None
+                and m.get("user")
+                and m["user"] != bot_id
+            ]
+
+            if not user_messages:
+                respond(":sadge: I couldn't find any messages - I swear I looked!", response_type="ephemeral")
+                return
+            
+            user_messages.sort(key=lambda m: float(m["ts"]))
+
+            seen = set()
+            timeline = []
+            for m in user_messages:
+                uid = m["user"]
+                if uid not in seen:
+                    seen.add(uid)
+                    timeline.append(f"<@{uid}>")
+
+            chain = "→".join(timeline)
+            respond(
+                f":ultrafastparrot: Channel Timeline ({len(timeline)} people)*\n{chain}",
+                response_type="ephemeral"
+            )
+
+        except Exception as e:
+            logger.error(f"/lopio history error: {e}")
+            respond(f":jame-goog: Couldn't fetch history. Error: `{e}`", response_type="ephemeral")
+
+
+    elif subCmd == "invite":
+        
