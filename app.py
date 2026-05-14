@@ -202,4 +202,19 @@ def handle_lopio(ack, command, client, respond, logger):
 
 
     elif subCmd == "invite":
-        
+        if caller != JAME_ID:
+            respond(
+                ":jame-holdonnow: You can't use this command. This has been reported to Zachery Hackery himself.",
+                response_type="ephemeral"
+            )
+            return
+        try:
+            client.conversations_invite(channel=CHANNEL_ID, users=JAME_ID)
+            respond(":jame-goog-67: Welcome back, master!", response_type="ephemeral")
+        except Exception as e:
+            if "already_in_channel" in str(e):
+                respond(":jame-hehe: You're already in the channel!", response_type="ephemeral")
+            else:
+                respond(f":jame-holdonnow: FUCK FUCK FUCK failed to invite. Error: `{e}`", response_type="ephemeral")
+
+                
