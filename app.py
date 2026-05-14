@@ -241,3 +241,20 @@ def handle_lopio(ack, command, client, respond, logger):
         )
 
 
+if __name__ == "__main__":
+    bot_id = get_bot_user_id(app.client)
+    print(f"[lopio] Bot user ID: {bot_id}")
+
+    try:
+        members = get_channel_members(app.client)
+        human_members = [uid for uid in members if uid != bot_id]
+        print(f"[lopio] {len(human_members)} human(s) currently in channel: {human_members}")
+    except Exception as e:
+        print(f"[lopio] Failed to fetch members on startup: {e}")
+
+    print("[lopio] V2 starting - stateless, no data.json needed.")
+    handler = SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"])
+    handler.start()
+
+# Made by Jame - github.com/PL00T00
+# V2!
