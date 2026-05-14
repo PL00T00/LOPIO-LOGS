@@ -16,5 +16,5 @@ source venv/bin/activate
 
 pip install -q -r requirements.txt
 
-echo "[lopio] Starting bot..."
+echo "[lopio] Starting bot V2..."
 python app.py
