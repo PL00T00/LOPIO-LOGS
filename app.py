@@ -89,7 +89,7 @@ def handle_join(event, client, logger):
         except Exception as e:
             logger.error(f"Error during empty-channel check: {e}")
 
-    threading.Thread(target=check_and_rescue, daemon=True.start())
+    threading.Thread(target=check_and_rescue, daemon=True).start()
     
     new_user = event["user"]
     bot_id = get_bot_user_id(client)
@@ -153,7 +153,7 @@ def handle_lopio(ack, command, client, respond, logger):
 
     if subCmd == "log":
         try:
-            current_members - get_channel_members(client)
+            current_members = get_channel_members(client)
             now = time.time()
             human_members = [uid for uid in current_members if uid != bot_id]
 
@@ -195,7 +195,7 @@ def handle_lopio(ack, command, client, respond, logger):
 
             user_messages = [
                 m for m in all_messages
-                im m.get("type") == "message"
+                if m.get("type") == "message"
                 and m.get("subtype") is None
                 and m.get("user")
                 and m["user"] != bot_id
@@ -246,7 +246,7 @@ def handle_lopio(ack, command, client, respond, logger):
             else:
                 respond(f":jame-holdonnow: FUCK FUCK FUCK failed to invite. Error: `{e}`", response_type="ephemeral")
 
-    elif: subCmd == "prompt":
+    elif subCmd == "prompt":
         respond(
             "Welcome to LOPIO! LOPIO stands for \"Leave one pass it on\" which pretty much describes the premise of this. "
             "Please read the entirety of the following before doing anything. If you lose this message run `/lopio prompt` to get it again.\n\n"
