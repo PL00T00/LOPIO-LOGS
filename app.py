@@ -157,4 +157,13 @@ def handle_lopio(ack, command, client, respond, logger):
             else:
                 lines.append("_Ahhh fuck, no humans here, fucking channel gone again. Wall of shame: ingo._")
 
-            respond
+            respond("\n".join(lines), response_type="ephemeral")
+
+        except Exception as e:
+            logger.error(f"/lopio log error: {e}")
+            respond(f":jame-goog: Couldn't fetch log. Error: `{e}`", response_type="ephemeral")
+
+
+    elif subCmd == "history":
+        try: 
+            all_messages = get_all_messages(client)
